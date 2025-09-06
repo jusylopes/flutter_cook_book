@@ -1,10 +1,12 @@
 import 'package:flutter_cook_book/data/models/recipe.dart';
+import 'package:flutter_cook_book/data/repositories/auth_repository.dart';
 import 'package:flutter_cook_book/data/repositories/recipe_repository.dart';
 import 'package:flutter_cook_book/di/service_locator.dart';
 import 'package:get/get.dart';
 
 class RecipeDetailViewModel extends GetxController {
   final _repository = getIt<RecipeRepository>();
+  final _authRepository = getIt<AuthRepository>();
 
   final Rxn<Recipe> _recipe = Rxn<Recipe>();
   final RxBool _isLoading = false.obs;
@@ -22,7 +24,12 @@ class RecipeDetailViewModel extends GetxController {
       _errorMessage.value = '';
       _recipe.value = await _repository.getRecipeById(id);
 
-      final userId = recipe!.userId;
+      var userId = '';
+      (await _authRepository.currentUser).fold(
+        (left) => _errorMessage.value = left.message,
+        (right) => userId = right.id,
+      );
+
       _isFavorite.value = await isRecipeFavorite(id, userId);
     } catch (e) {
       _errorMessage.value = 'Falha ao buscar receita: ${e.toString()}';
@@ -46,13 +53,17 @@ class RecipeDetailViewModel extends GetxController {
   }
 
   Future<void> toggleFavorite() async {
-    final currentUserId = recipe!.userId;
+    var userId = '';
+    (await _authRepository.currentUser).fold(
+      (left) => _errorMessage.value = left.message,
+      (right) => userId = right.id,
+    );
     final recipeId = recipe!.id;
 
     if (_isFavorite.value) {
-      await removeFromFavorites(recipeId, currentUserId);
+      await removeFromFavorites(recipeId, userId);
     } else {
-      await addToFavorites(recipeId, currentUserId);
+      await addToFavorites(recipeId, userId);
     }
   }
 

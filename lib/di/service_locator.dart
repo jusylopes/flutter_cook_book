@@ -4,6 +4,7 @@ import 'package:flutter_cook_book/data/services/auth_service.dart';
 import 'package:flutter_cook_book/data/services/recipe_service.dart';
 import 'package:flutter_cook_book/ui/auth/auth_view_model.dart';
 import 'package:flutter_cook_book/ui/fav_recipes/fav_recipes_view_model.dart';
+import 'package:flutter_cook_book/ui/profile/profile_view_model.dart';
 import 'package:flutter_cook_book/ui/recipe_detail/recipe_detail_view_model.dart';
 import 'package:flutter_cook_book/ui/recipes/recipes_view_model.dart';
 import 'package:get_it/get_it.dart';
@@ -26,4 +27,5 @@ Future<void> setupDependencies() async {
   );
   getIt.registerLazySingleton<FavRecipesViewModel>(() => FavRecipesViewModel());
   getIt.registerLazySingleton<AuthViewModel>(() => AuthViewModel());
+  getIt.registerLazySingleton<ProfileViewModel>(() => ProfileViewModel());
 }
