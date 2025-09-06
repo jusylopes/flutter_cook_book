@@ -95,6 +95,8 @@ class Recipe {
     return [];
   }
 
+  get value => null;
+
   static List<String>? _parseJsonListOptional(dynamic json) {
     if (json == null) return null;
     return _parseJsonList(json);

@@ -14,6 +14,14 @@ class RecipeRepository {
     }
   }
 
+  Future<void> insertFavRecipe(String recipeId, String userId) async {
+    await _service.insertFavRecipe(recipeId, userId);
+  }
+
+  Future<void> deleteFavRecipe(String recipeId, String userId) async {
+    await _service.deleteFavRecipe(recipeId, userId);
+  }
+
   Future<Recipe?> getRecipeById(String id) async {
     final rawData = await _service.fetchRecipeById(id);
     return rawData != null ? Recipe.fromJson(rawData) : null;
