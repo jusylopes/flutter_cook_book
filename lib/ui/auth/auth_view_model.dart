@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cook_book/data/repositories/auth_repository.dart';
 import 'package:flutter_cook_book/di/service_locator.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthViewModel extends GetxController {
+  final _repository = getIt<AuthRepository>();
+
   final formKey = GlobalKey<FormState>();
 
   final emailController = TextEditingController();
@@ -15,10 +18,12 @@ class AuthViewModel extends GetxController {
   final _obscurePassword = true.obs;
   final _isSubmitting = false.obs;
   final _isLoginMode = true.obs;
+  final _errorMessage = ''.obs;
 
   bool get obscurePassword => _obscurePassword.value;
   bool get isSubmitting => _isSubmitting.value;
   bool get isLoginMode => _isLoginMode.value;
+  String get errorMessage => _errorMessage.value;
 
   User? get currentUser => getIt<AuthViewModel>().currentUser;
 
@@ -73,8 +78,32 @@ class AuthViewModel extends GetxController {
     final valid = formKey.currentState?.validate() ?? false;
     if (!valid) return;
 
-    _isSubmitting.value = true;
+    if (isLoginMode) {
+      await login();
+    } else {
+      await register();
+    }
   }
+
+  Future<void> login() async {
+    final response = await _repository.signInWithPassword(
+      email: emailController.text,
+      password: passwordController.text,
+    );
+    response.fold(
+      (left) {
+        _errorMessage.value = left.message;
+
+        debugPrint(errorMessage);
+      },
+      (right) {
+        debugPrint('Login: ${right.email}');
+        return;
+      },
+    );
+  }
+
+  Future<void> register() async {}
 
   @override
   void onClose() {

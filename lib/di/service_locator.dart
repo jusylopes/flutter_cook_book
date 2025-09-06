@@ -1,4 +1,6 @@
+import 'package:flutter_cook_book/data/repositories/auth_repository.dart';
 import 'package:flutter_cook_book/data/repositories/recipe_repository.dart';
+import 'package:flutter_cook_book/data/services/auth_service.dart';
 import 'package:flutter_cook_book/data/services/recipe_service.dart';
 import 'package:flutter_cook_book/ui/auth/auth_view_model.dart';
 import 'package:flutter_cook_book/ui/fav_recipes/fav_recipes_view_model.dart';
@@ -11,8 +13,13 @@ final getIt = GetIt.instance;
 
 Future<void> setupDependencies() async {
   getIt.registerSingleton<SupabaseClient>(Supabase.instance.client);
+
   getIt.registerLazySingleton<RecipeService>(() => RecipeService());
+  getIt.registerLazySingleton<AuthService>(() => AuthService());
+
   getIt.registerLazySingleton<RecipeRepository>(() => RecipeRepository());
+  getIt.registerLazySingleton<AuthRepository>(() => AuthRepository());
+
   getIt.registerLazySingleton<RecipesViewModel>(() => RecipesViewModel());
   getIt.registerLazySingleton<RecipeDetailViewModel>(
     () => RecipeDetailViewModel(),
