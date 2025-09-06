@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cook_book/data/models/recipe.dart';
+import 'package:flutter_cook_book/ui/widgets/recipe_row_details.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class RecipeCard extends StatelessWidget {
@@ -55,86 +56,7 @@ class RecipeCard extends StatelessWidget {
               subtitle: Text('${recipe.cuisine}', textAlign: TextAlign.center),
             ),
             const SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Column(
-                  children: [
-                    Icon(
-                      Icons.help_outline_sharp,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                    Text(
-                      '${recipe.difficulty}',
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Icon(
-                      Icons.watch_later_outlined,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                    Text(
-                      '${recipe.prepTimeMinutes} min',
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Icon(
-                      Icons.people_alt_outlined,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                    Text(
-                      '${recipe.servings}',
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Icon(
-                      Icons.local_fire_department_outlined,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                    Text(
-                      '${recipe.caloriesPerServing} cal',
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Icon(
-                      Icons.star_border_outlined,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                    Text(
-                      '${recipe.rating?.toStringAsFixed(1) ?? 'N/A'} (${recipe.reviewCount ?? 0})',
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+            RecipeRowDetails(recipe: recipe),
           ],
         ),
       ),
